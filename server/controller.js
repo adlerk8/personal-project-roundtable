@@ -52,6 +52,6 @@ module.exports = {
 
         const updatedUser = await db.auth.edit_user([id, img]);
         req.session.user - updatedUser;
-        res.send(200).send(req.session.user);
+        res.send(200).send(req.session.user); 
     }
 }

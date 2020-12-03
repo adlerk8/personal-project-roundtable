@@ -19,7 +19,7 @@ app.use(session({
 }))
 
 massive({
-    connectionString = CONNECTION_STRING,
+    connectionString: CONNECTION_STRING,
     ssl: {rejectUnauthorized: false}
 }).then((db) => {
     app.set('db', db)
@@ -33,5 +33,6 @@ app.post('/api/register', ctrl.register);
 app.delete('/api/logout', ctrl.logout);
 
 // Content Endpoints:
+
 
 app.listen(SERVER_PORT, () => console.log(`Server reporting for duty on port ${SERVER_PORT}, judicator`));
