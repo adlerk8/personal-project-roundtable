@@ -29,14 +29,16 @@ module.exports = {
         const { username, password } = req.body;
 
     try {
-        const [foundUser] = await db.auth.find_user(username);
+        const [foundUser] = await db.find_user(username);
         if (foundUser) {
             res.status(401).send("Looks like that username has already been registered. Try signing in instead.");
         } else {
             const salt = bcrypt.genSaltSync(10);
             const hash = bcrypt.hashSync(password, salt);
-            const [newUser] = await db.auth.register_user([username, hash]);
+            const [newUser] = await db.register_user([username, hash]);
+            delete newUser.password;
             req.session.user = newUser;
+            console.log(req.session.user)
             res.status(200).send(req.session.user);
         }
     } catch (err) {"Database error on register function: ", err}
@@ -50,7 +52,7 @@ module.exports = {
         const { img } = req.body;
         const { id } = req.session.user;
 
-        const updatedUser = await db.auth.edit_user([id, img]);
+        const updatedUser = await db.edit_user([id, img]);
         req.session.user - updatedUser;
         res.send(200).send(req.session.user); 
     }
