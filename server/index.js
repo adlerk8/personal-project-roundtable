@@ -33,6 +33,11 @@ app.post('/api/register', ctrl.register);
 app.delete('/api/logout', ctrl.logout);
 
 // Content Endpoints:
-
+app.get('/api/post/:postid', ctrl.getPost);
+app.get('/api/posts/:userid', ctrl.getPosts);
+app.put('/api/posts/:postid', ctrl.editPost);
+app.delete('/api/posts/:postid', ctrl.deletePost);
+app.put('/api/comments/:commentid', ctrl.editComment);
+app.delete('/api/comments/:commentid', ctrl.deleteComment);
 
 app.listen(SERVER_PORT, () => console.log(`Server reporting for duty on port ${SERVER_PORT}, judicator`));
