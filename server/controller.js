@@ -64,6 +64,19 @@ module.exports = {
             res.sendStatus(500);
         }
     },
+    addPost: async (req, res) => {
+        const db = req.app.get('db');
+        const {title, content, img} = req.body;
+        const {writer_id} = req.session.user;
+
+        try {
+            const addedPost = await db.add_post([title, content, img, writer_id]);
+            res.status(200).send(addedPost);
+        } catch (err) {
+            console.log("Database error on addPost function: ", err);
+            res.sendStatus(500);
+        }
+    },
     getPost: async (req, res) => {
         const {postid} = req.params;
         const db = req.app.get('db');
@@ -133,7 +146,17 @@ module.exports = {
         };
     },
     addComment: async (req, res) => {
-        
+        const db = req.app.get('db');
+        const {id} = req.params;
+        const {commentBody} = req.body;
+
+        try {
+            const addedComment = await db.add_comment(+id, commentBody);
+            res.status(200).send(addedComment)
+        } catch (err) {
+            console.log("Database error on addComment function: ", err);
+            res.sendStatus(500);
+        };
     },
     editComment: async (req, res) => {
         const db = req.app.get('db');
