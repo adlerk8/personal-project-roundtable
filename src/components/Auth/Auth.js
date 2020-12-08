@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { loginUser } from 
+import { loginUser } from '../../redux/reducer';
 
 
 class Auth extends Component {
@@ -26,7 +26,7 @@ class Auth extends Component {
         try {
             const user = await axios.post('/api/login', { username, password })
             this.props.loginUser(user.data)
-            this.props.history.push('/dashboard')
+            this.props.history.push('/home')
         }
         catch (err) {
             console.log(err)
@@ -39,7 +39,7 @@ class Auth extends Component {
         try {
             const user = await axios.post('/api/register', {username, password})
             this.props.loginUser(user.data)
-            this.props.history.push('/dashboard')
+            this.props.history.push('/home')
         }
         catch (err) {
             console.log(err)
@@ -50,6 +50,7 @@ class Auth extends Component {
         const { username, password } = this.state;
         return (
             <div>
+                <h1>Welcome to Roundtable</h1>
                 <form>
                     <input
                         name="username"
@@ -63,12 +64,10 @@ class Auth extends Component {
                         onChange={e => this.handleChange(e)}
                     />
                     <div className="buttons">
-                        <button onClick={e => this.register(e)}>Register</button>
+                        <button onClick={e => this.register(e)}>Join Roundtable</button>
                         <button onClick={e => this.login(e)}>Sign in</button>
                     </div>
                 </form>
-
-
             </div>
         )
     }
