@@ -1,17 +1,10 @@
 const initialState = {
-    content: '', 
-    title: '',
-    profilePic: '',
-    username: '',
-    date: '',
-    writerId: 0
+    user: {}
 }
 
 const LOGIN_USER = "LOGIN_USER";
-const POST_CONTENT = "POST_CONTENT";
-const EDIT_CONTENT = "EDIT_CONTENT";
-const DELETE_CONTENT = "DELETE_CONTENT";
-const ADD_PIC = "ADD_PIC";
+const LOGOUT_USER = "LOGOUT_USER";
+
 
 export function loginUser(user){
     return {
@@ -20,10 +13,18 @@ export function loginUser(user){
     }
 };
 
+export function logoutUser() {
+    return {
+        type: LOGOUT_USER
+    }
+};
+
 export default function reducer(state = initialState, action) {
     switch(action.type) {
         case LOGIN_USER:
             return {...state, user: action.payload}
+        case LOGOUT_USER:
+            return initialState
         default:
             return state
     }

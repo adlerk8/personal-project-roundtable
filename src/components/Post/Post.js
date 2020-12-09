@@ -6,6 +6,9 @@ class Post extends Component {
         super();
 
         this.state = {
+            title: '',
+            content: '',
+            timestamp: '',
             comment: ''
         }
     }
@@ -24,6 +27,10 @@ class Post extends Component {
 
     };
 
+    addComment = () => {
+
+    };
+
     render() {
         return (
             <div>
@@ -31,14 +38,17 @@ class Post extends Component {
                     <div className="postInfo">
                         <h3>Date</h3>
                         <h2>Title</h2>
-                        <button onClick={editContent()}>Edit</button>
+                        <button>Edit</button>
                     </div>
                     <div className="postContent">
-                        <button onClick={deletePost()}>Delete</button>
+                        <button>Delete</button>
                         <p>Content</p>
+                        <button>Add Comment</button>
                     </div>
                     <div className="comment-container">
-                        <Comment/>
+                        <ul>
+                            <li><Comment/></li>
+                        </ul>
                     </div>
                 </div>
             </div>
