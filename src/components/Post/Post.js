@@ -1,59 +1,80 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Comment from '../Comment/Comment';
+import axios from 'axios';
+import { connect } from 'react-redux';
 
-class Post extends Component {
-    constructor() {
-        super();
+const Post = (props) => {
+const [title, setTitle] = useState('');
+const [content, setContent] = useState('');
+const [timestamp, setTimestamp] = useState('');
+const [username, setUsername] = useState('');
+const [profilePic, setProfilePic] = useState('');
+const [canEdit, setCanEdit] = useState(false);
 
-        this.state = {
-            title: '',
-            content: '',
-            timestamp: '',
-            comment: ''
-        }
-    }
+useEffect(() => {
+    axios
+        .get(`/api/post/${props.match.params.id}`)
+        .then((res) => {
+            setTitle(res.data.title);
+            setContent(res.data.content);
+            setTimestamp(res.data.created_at);
+            setUsername(res.data.username);
+            setProfilePic(res.data.profile_pic);
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+})
+    // const handleChange = (e) => {
+    //     this.setState({
+    //         [e.target.name]: e.target.value
+    //     })
+    // };
 
-    handleChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
+    const editPost = () => {
+        axios
+        .put(`/api/posts/${props.match.params.id}, ${title, content}`)
+        .then((res) => {
+            setTitle(res.data.title);
+            setContent(res.data.content); 
+        })
+        .catch((err) => {
+            console.log(err)
         })
     };
 
-    editContent = () => {
-
+    const deletePost = () => {
+        axios
+        .delete(`/api/posts/${props.match.params.id}`)
     };
 
-    deletePost = () => {
-
+    const addComment = () => {
+        
     };
 
-    addComment = () => {
-
-    };
-
-    render() {
-        return (
-            <div>
-                <div className="postBody">
-                    <div className="postInfo">
-                        <h3>Date</h3>
-                        <h2>Title</h2>
-                        <button>Edit</button>
-                    </div>
-                    <div className="postContent">
-                        <button>Delete</button>
-                        <p>Content</p>
-                        <button>Add Comment</button>
-                    </div>
-                    <div className="comment-container">
-                        <ul>
-                            <li><Comment/></li>
-                        </ul>
-                    </div>
+    return (
+        <div>
+            <div className="postBody">
+                <div className="postInfo">
+                    <h3>Date: {timestamp}</h3>
+                    <h2>Title: {title}</h2>
+                    <button>Edit</button>
+                </div>
+                <div className="postContent">
+                    <button onClick={deletePost}>Delete</button>
+                    <p>{content}</p>
+                    <button>Add Comment</button>
+                </div>
+                <div className="comment-container">
+                    <ul>
+                        <li><Comment/></li>
+                    </ul>
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
 }
 
-export default Post;
+const mapStateToProps = state => state;
+
+export default connect(mapStateToProps)(Post);

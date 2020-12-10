@@ -66,11 +66,11 @@ module.exports = {
     },
     addPost: async (req, res) => {
         const db = req.app.get('db');
-        const {title, content, img} = req.body;
+        const {title, content} = req.body;
         const {writer_id} = req.session.user;
 
         try {
-            const addedPost = await db.add_post([title, content, img, writer_id]);
+            const addedPost = await db.add_post([title, content, writer_id]);
             res.status(200).send(addedPost);
         } catch (err) {
             console.log("Database error on addPost function: ", err);
@@ -95,7 +95,7 @@ module.exports = {
     },
     getPosts: async (req, res) => {
         // req.params refers to posts.writer_id:
-        const {id} = req.params;
+        const {userid} = req.params;
         const {userposts, search} = req.query;
         const db = req.app.get('db');
         
@@ -104,10 +104,10 @@ module.exports = {
                 const foundPost = db.posts.where({"title like": "%search%"})
                 res.status(200).send(foundPost)
             } else if (userposts === false && search !== null) {
-                const foundPost = db.posts.where({"title like": "%search%", "writer_id !=": id})
+                const foundPost = db.posts.where({"title like": "%search%", "userid !=": writer_id})
                 res.status(200).send(foundPost)
             } else if (userposts === false && search === null) {
-                const foundPost = db.posts.where({"writer_id !=": id})
+                const foundPost = db.posts.where({"userid !=": writer_id})
                 res.status(200).send(foundPost)
             } else {
                 const posts = await db.get_posts();
@@ -120,12 +120,11 @@ module.exports = {
     },
     editPost: async (req, res) => {        
         const db = req.app.get("db");
-        // req.params refers to posts.id:
-        const {id} = req.params;
+        const {postid} = req.params;
         const {title, img, content} = req.body;
 
         try {
-            const posts = await db.edit_post([+id, title, content, img]);
+            const posts = await db.edit_post([+postid, title, content, img]);
             res.status(200).send(posts);
         } catch (err) {
             console.log("Database error on editPost function: ", err);
@@ -134,11 +133,10 @@ module.exports = {
     },
     deletePost: async (req, res) => {
         const db = req.app.get("db");
-        // id in req.params refers to posts.id:
-        const {id} = req.params;
+        const {postid} = req.params;
     
         try {
-            const posts = await db.delete_post(+id);
+            const posts = await db.delete_post(+postid);
             res.status(200).send(posts);
         } catch (err) {
             console.log("Database error on deletePost function: ", err);
@@ -147,11 +145,12 @@ module.exports = {
     },
     addComment: async (req, res) => {
         const db = req.app.get('db');
-        const {id} = req.params;
+        const {postid} = req.params;
         const {commentBody} = req.body;
+        const {id} = req.session.user;
 
         try {
-            const addedComment = await db.add_comment(+id, commentBody);
+            const addedComment = await db.add_comment([postid, commentBody, id]);
             res.status(200).send(addedComment)
         } catch (err) {
             console.log("Database error on addComment function: ", err);
@@ -161,11 +160,11 @@ module.exports = {
     editComment: async (req, res) => {
         const db = req.app.get('db');
         // id refers to comments.id in req.params:
-        const {id} = req.params;
+        const {commentid} = req.params;
         const {commentBody} = req.body;
 
         try {
-            const comments = await db.edit_comment([+id, commentBody]);
+            const comments = await db.edit_comment([+commentid, commentBody]);
             res.status(200).send(comments)
         } catch (err) {
             console.log("Database error on editComment function: ", err);
@@ -174,11 +173,10 @@ module.exports = {
     },
     deleteComment: async (req, res) => {
         const db = req.app.get('db');
-        // id refers to comments.id in req.params:
-        const {id} = req.params;
+        const {commentid} = req.params;
 
         try {
-            const comments = await db.delete_comment(+id);
+            const comments = await db.delete_comment(+commentid);
             res.status(200).send(comments);
         } catch (err) {
             console.log("Database error on deleteComment function: ", err);

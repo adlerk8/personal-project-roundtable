@@ -10,9 +10,9 @@ class Header extends Component {
         console.log(this.props)
         return (
             <div classname="header">
-                <div>Hey {this.props.username}</div>
+                <div>Hey {this.props.user.username}</div>
                 <h1 id="siteTitle">Roundtable</h1>
-                <div><img src={this.props.profilePic} alt="avatar"/></div>
+                <div><img src={this.props.user.profile_pic} alt="avatar"/></div>
             </div>
         )
     }
