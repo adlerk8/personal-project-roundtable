@@ -14,7 +14,8 @@ const Nav = (props) => {
     return (
         <div>
             <Link to="/newpost">Write Something</Link>
-            <Link to="/feed">Visit the Roundtable</Link>
+            <Link to="/feed">Home</Link>
+            <Link to="/home">My Posts</Link>
             <Link to="/" onClick={logout}>Logout</Link>
         </div>
     )
