@@ -1,37 +1,41 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import PostDetail from '../PostDetail/PostDetail';
+import axios from 'axios';
+import PostList from '../PostList/PostList';
+import { connect } from 'react-redux';
 
 const Home = () => {
     const [posts, setPosts] = useState([]);
-    const [userposts, setUserposts]= useState(true);
+    const [userposts, setUserposts]= useState(false);
+    const [search, setSearch] = useState('');
     const { id } = useParams();
     
     useEffect(() => {
-        const getPosts = async (id) => {
+        const getPosts = async () => {
             try {
-                const res = await axios.get(`/api/post/${id}`)
+                const res = await axios.get(`/api/posts/${id}`)
                 setPosts(res.data)
             } catch (err) {
                 console.log(err)
             }
         };
         getPosts();
-    })
-
-    const mappedPosts = posts.map((post, index) => {
-        return (
-            <PostDetail key={post.id-index}/>
-        )
-    })
+    }, [])
 
     return (
         <div>
-            <div>Search Bar</div>
-            <div>{mappedPosts}</div>
+            <input
+                type="text"
+                placeholder="Search posts..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+            />
+            <PostList/>
             <h2>Write without fear. Edit without mercy.</h2>
         </div>
     )
 }
 
-export default Home;
+const mapStateToProps = state => state;
+
+export default connect(mapStateToProps)(Home);

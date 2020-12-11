@@ -1,23 +1,22 @@
 import { useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import PostDetail from '../PostDetail/PostDetail';
 
 
-const PostList = (props) => {
+const MyPosts = (props) => {
 const [posts, setPosts] = useState([]);
 const { id } = useParams();
 
 useEffect(() => {
-    const getAllPosts = async () => {
+    const getMyPosts = async () => {
         try {
-            const res = await axios.get(`/api/allposts`)
+            const res = await axios.get(`/api/posts`)
             setPosts(res.data);
         } catch (err) {
             console.log(err)
         }
     }
-    getAllPosts();
+    getMyPosts();
 }, []);
 
     const deletePost = async (id) => {
@@ -33,7 +32,6 @@ useEffect(() => {
         return (
             <div key={post.id}>
                 <div className="postInfo">
-                    {console.log(props)}
                     <h3>Date: {post.created_at}</h3>
                     <h2>Title: {post.title}</h2>
                     <h2>By: {post.username}</h2>
@@ -49,10 +47,9 @@ useEffect(() => {
 
     return (
         <div>
-            {console.log(posts)}
             {mappedPosts}
         </div>
     );
 }
 
-export default PostList;
+export default MyPosts;

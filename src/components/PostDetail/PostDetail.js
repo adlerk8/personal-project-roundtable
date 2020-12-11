@@ -13,7 +13,7 @@ const [canEdit, setCanEdit] = useState(false);
 const { id } = useParams();
 
 useEffect(() => {
-    const getPost = async (id) => {
+    const getPost = async () => {
         try {
             const res = await axios.get(`/api/post/${id}`)
             setTitle(res.data.title);
@@ -25,7 +25,7 @@ useEffect(() => {
         }
     };
     getPost();
-}, [id]);
+}, []);
 
     const editPost = async (id, title, content) => {
         try {
@@ -50,6 +50,7 @@ useEffect(() => {
         <div>
             <div className="postBody">
                 <div className="postInfo">
+                    {console.log(props)}
                     <h3>Date: {timestamp}</h3>
                     <h2>Title: {title}</h2>
                     <h2>By: {username}</h2>

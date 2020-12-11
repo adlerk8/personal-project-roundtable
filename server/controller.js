@@ -96,9 +96,8 @@ module.exports = {
         }
     },
     getPosts: async (req, res) => {
-        // req.params refers to posts.writer_id:
-        const {userid} = req.params;
         const {userposts, search} = req.query;
+        const {id} = req.session.user;
         const db = req.app.get('db');
         
         try {
@@ -106,10 +105,10 @@ module.exports = {
                 const foundPost = db.posts.where({"title like": "%search%"})
                 res.status(200).send(foundPost)
             } else if (userposts === false && search !== null) {
-                const foundPost = db.posts.where({"title like": "%search%", "writer_id !=": userid})
+                const foundPost = db.posts.where({"title like": "%search%", "writer_id !=": id})
                 res.status(200).send(foundPost)
             } else if (userposts === false && search === null) {
-                const foundPost = db.posts.where({"writer_id !=": userid})
+                const foundPost = db.posts.where({"writer_id !=": id})
                 res.status(200).send(foundPost)
             } else {
                 const posts = await db.get_posts();
@@ -117,6 +116,17 @@ module.exports = {
             }
         } catch (err) {
             console.log("Database error on getPosts function: ", err);
+            res.sendStatus(500);
+        };
+    },
+    getAllPosts: async (req, res) => {
+        const db = req.app.get('db');
+
+        try{
+            const posts = await db.get_all_posts();
+            res.status(200).send(posts);
+        } catch (err) {
+            console.log("Database error on getAllPosts function: ", err);
             res.sendStatus(500);
         };
     },
