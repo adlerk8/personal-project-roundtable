@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import Comment from '../Comment/Comment';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -9,11 +10,12 @@ const [content, setContent] = useState('');
 const [timestamp, setTimestamp] = useState('');
 const [username, setUsername] = useState('');
 const [canEdit, setCanEdit] = useState(false);
+const { id } = useParams();
 
 useEffect(() => {
-    const getPost = async () => {
+    const getPost = async (id) => {
         try {
-            const res = await axios.get(`/api/post/${props.match.params.id}`)
+            const res = await axios.get(`/api/post/${id}`)
             setTitle(res.data.title);
             setContent(res.data.content);
             setTimestamp(res.data.created_at);
@@ -23,11 +25,11 @@ useEffect(() => {
         }
     };
     getPost();
-}, [props.match.params]);
+}, [id]);
 
     const editPost = async (id, title, content) => {
         try {
-            const res = await axios.put(`/api/posts/${id}, ${title, content}`);
+            const res = await axios.put(`/api/posts/${id}`, {title, content});
             setTitle(res.data.title);
             setContent(res.data.content); 
         } catch(err) {
@@ -37,7 +39,7 @@ useEffect(() => {
 
     const addComment = async (postid, commentBody) => {
         try{
-            const res = await axios.post(`/api/comments/${postid}, ${commentBody}`)
+            const res = await axios.post(`/api/comments/${postid}`, commentBody)
             
         } catch(err) {
             console.log(err);
@@ -54,7 +56,7 @@ useEffect(() => {
                     <button onClick={() => editPost(id)}>Edit</button>
                 </div>
                 <div className="postContent">
-                    <button onClick={() => props.onDelete(props.match.params.id)}>Delete</button>
+                    <button onClick={() => props.onDelete(id)}>Delete</button>
                     <p>{content}</p>
                     <button>Add Comment</button>
                 </div>

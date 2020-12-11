@@ -67,11 +67,12 @@ module.exports = {
     addPost: async (req, res) => {
         const db = req.app.get('db');
         const {title, content} = req.body;
-        const {writer_id} = req.session.user;
+        const {id} = req.session.user;
+        console.log(id);
 
         try {
-            const addedPost = await db.add_post([title, content, writer_id]);
-            res.status(200).send(addedPost);
+            await db.add_post([title, content, id]);
+            res.sendStatus(200);
         } catch (err) {
             console.log("Database error on addPost function: ", err);
             res.sendStatus(500);
@@ -80,11 +81,12 @@ module.exports = {
     getPost: async (req, res) => {
         const {postid} = req.params;
         const db = req.app.get('db');
+        console.log(postid);
 
         try {
             const singlePost = await db.get_post(postid)
             if (singlePost) {
-                res.status(200).send(singlePost[0])
+                res.status(200).send(singlePost)
             } else {
                 res.status(404).send("Oops! We cannot display posts at this time.")
             }
@@ -104,10 +106,10 @@ module.exports = {
                 const foundPost = db.posts.where({"title like": "%search%"})
                 res.status(200).send(foundPost)
             } else if (userposts === false && search !== null) {
-                const foundPost = db.posts.where({"title like": "%search%", "userid !=": writer_id})
+                const foundPost = db.posts.where({"title like": "%search%", "writer_id !=": userid})
                 res.status(200).send(foundPost)
             } else if (userposts === false && search === null) {
-                const foundPost = db.posts.where({"userid !=": writer_id})
+                const foundPost = db.posts.where({"writer_id !=": userid})
                 res.status(200).send(foundPost)
             } else {
                 const posts = await db.get_posts();

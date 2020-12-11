@@ -33,7 +33,7 @@ app.post('/api/register', ctrl.register);
 app.delete('/api/logout', ctrl.logout);
 
 // Content Endpoints:
-app.post('/api/post/', ctrl.addPost);
+app.post('/api/post', ctrl.addPost);
 app.get('/api/post/:postid', ctrl.getPost);
 app.get('/api/posts/:userid', ctrl.getPosts);
 app.put('/api/posts/:postid', ctrl.editPost);
