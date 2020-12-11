@@ -1,5 +1,5 @@
 import React from 'react';
-import Post from '../Post/Post';
+import Post from '../PostDetail/PostDetail';
 
 const Home = () => {
     return (

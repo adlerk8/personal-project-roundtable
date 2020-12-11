@@ -13,60 +13,48 @@ const [canEdit, setCanEdit] = useState(false);
 useEffect(() => {
     const getPost = async () => {
         try {
-            axios
-            .get(`/api/post/${props.match.params.id}`)
-            .then((res) => {
-                setTitle(res.data.title);
-                setContent(res.data.content);
-                setTimestamp(res.data.created_at);
-                setUsername(res.data.username);
-            })
+            const res = await axios.get(`/api/post/${props.match.params.id}`)
+            setTitle(res.data.title);
+            setContent(res.data.content);
+            setTimestamp(res.data.created_at);
+            setUsername(res.data.username);
         } catch (err) {
             console.log(err)
         }
     };
     getPost();
-});
-    // const handleChange = (e) => {
-    //     this.setState({
-    //         [e.target.name]: e.target.value
-    //     })
-    // };
+}, [props.match.params]);
 
     const editPost = async (id, title, content) => {
         try {
-            await axios
-            .put(`/api/posts/${id}, ${title, content}`)
-            .then((res) => {
-                setTitle(res.data.title);
-                setContent(res.data.content); 
-            })
+            const res = await axios.put(`/api/posts/${id}, ${title, content}`);
+            setTitle(res.data.title);
+            setContent(res.data.content); 
         } catch(err) {
             console.log(err)
         }
     };
 
-    const deletePost = (id) => {
-        axios
-        .delete(`/api/posts/${props.match.params.id}`)
-    };
-
-    const addComment = () => {
-        
+    const addComment = async (postid, commentBody) => {
+        try{
+            const res = await axios.post(`/api/comments/${postid}, ${commentBody}`)
+            
+        } catch(err) {
+            console.log(err);
+        }
     };
 
     return (
         <div>
             <div className="postBody">
                 <div className="postInfo">
-                    {console.log(props.match.params)}
                     <h3>Date: {timestamp}</h3>
                     <h2>Title: {title}</h2>
                     <h2>By: {username}</h2>
-                    <button>Edit</button>
+                    <button onClick={() => editPost(id)}>Edit</button>
                 </div>
                 <div className="postContent">
-                    <button onClick={deletePost}>Delete</button>
+                    <button onClick={() => props.onDelete(props.match.params.id)}>Delete</button>
                     <p>{content}</p>
                     <button>Add Comment</button>
                 </div>

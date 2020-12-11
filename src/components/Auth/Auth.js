@@ -53,11 +53,13 @@ class Auth extends Component {
                 <h1>Welcome to Roundtable</h1>
                 <form>
                     <input
+                        name="username"
                         placeholder="username"
                         value={username}
                         onChange={e => this.handleChange(e)}
                     />
                     <input
+                        name="password"
                         placeholder="password"
                         type="password"
                         value={password}
