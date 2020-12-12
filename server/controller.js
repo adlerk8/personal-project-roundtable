@@ -95,7 +95,7 @@ module.exports = {
             res.sendStatus(500);
         }
     },
-    getPosts: async (req, res) => {
+    getMyPosts: async (req, res) => {
         const {userposts, search} = req.query;
         const {id} = req.session.user;
         const db = req.app.get('db');
@@ -146,7 +146,7 @@ module.exports = {
     deletePost: async (req, res) => {
         const db = req.app.get("db");
         const {postid} = req.params;
-    
+
         try {
             const posts = await db.delete_post(+postid);
             res.status(200).send(posts);

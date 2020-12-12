@@ -1,7 +1,6 @@
 import { useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import PostDetail from '../PostDetail/PostDetail';
 
 
 const PostList = (props) => {
@@ -29,18 +28,27 @@ useEffect(() => {
         };
     };
 
+    // const editPost = async (id, title, content) => {
+    //     try {
+    //         const res = await axios.put(`/api/posts/${id}`, {title, content});
+    //         setTitle(res.data.title);
+    //         setContent(res.data.content); 
+    //     } catch(err) {
+    //         console.log(err)
+    //     }
+    // };
+
     const mappedPosts = posts.map((post) => {
         return (
             <div key={post.id}>
                 <div className="postInfo">
-                    {console.log(props)}
                     <h3>Date: {post.created_at}</h3>
                     <h2>Title: {post.title}</h2>
                     <h2>By: {post.username}</h2>
                     {/* <button onClick={() => editPost(id)}>Edit</button> */}
                 </div>
                 <div className="postContent">
-                    {/* <button onClick={() => props.onDelete(id)}>Delete</button> */}
+                    <button onClick={() => deletePost(post.id)}>Delete</button>
                     <p>{post.content}</p>
                 </div>
             </div>
@@ -49,7 +57,6 @@ useEffect(() => {
 
     return (
         <div>
-            {console.log(posts)}
             {mappedPosts}
         </div>
     );
