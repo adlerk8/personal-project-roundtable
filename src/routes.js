@@ -10,7 +10,7 @@ export default (
     <Switch>
         <Route exact path="/" component={Auth}/>
         <Route path="/home" component={PostList}/>
-        <Route path="/post/:postid" component={PostDetail}/>
+        <Route path="/post/:postId" component={PostDetail}/>
         <Route path="/newpost" component={NewPost}/>
         <Route path="/myposts" component={MyPosts}/>
     </Switch>

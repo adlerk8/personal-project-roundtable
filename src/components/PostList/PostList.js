@@ -2,6 +2,7 @@ import { useState, useEffect} from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 
 const PostList = (props) => {
@@ -21,24 +22,6 @@ useEffect(() => {
     getAllPosts();
 }, []);
 
-    const deletePost = async (id) => {
-        try {
-            await axios.delete(`/api/posts/${id}`);
-            history.push('/home');
-        } catch(err) {
-            console.log(err);
-        };
-    };
-
-    // const editPost = async (id, title, content) => {
-    //     try {
-    //         const res = await axios.put(`/api/posts/${id}`, {title, content});
-    //         setTitle(res.data.title);
-    //         setContent(res.data.content); 
-    //     } catch(err) {
-    //         console.log(err)
-    //     }
-    // };
 
     const mappedPosts = posts.map((post) => {
         return (
@@ -47,18 +30,9 @@ useEffect(() => {
                     <h3>Date: {post.created_at}</h3>
                     <h2>Title: {post.title}</h2>
                     <h2>By: {post.username}</h2>
-                    {/* {props.user.id === post.writer_id ? 
-                         <button onClick={() => editPost(post.id)}>Edit</button>
-                    :
-                        null
-                    } */}
+                    <button><Link to={`/post/${post.id}`}>View Post</Link></button>
                 </div>
-                <div className="postContent">
-                    {props.user.id === post.writer_id ? 
-                        <button onClick={() => deletePost(post.id)}>Delete</button>
-                    :
-                        null
-                    }                    
+                <div className="postContent">                   
                     <p>{post.content}</p>
                 </div>
             </div>

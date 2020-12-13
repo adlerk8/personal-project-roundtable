@@ -82,7 +82,7 @@ module.exports = {
         const db = req.app.get('db');
 
         try {
-            const singlePost = await db.get_post(postid)
+            const [singlePost] = await db.get_post(postid)
             if (singlePost) {
                 res.status(200).send(singlePost)
             } else {
