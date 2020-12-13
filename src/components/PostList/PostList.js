@@ -1,11 +1,12 @@
 import { useState, useEffect} from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
 
 const PostList = (props) => {
 const [posts, setPosts] = useState([]);
+const history = useHistory();
 const { id } = useParams();
 
 useEffect(() => {
@@ -22,8 +23,8 @@ useEffect(() => {
 
     const deletePost = async (id) => {
         try {
-            const res = await axios.delete(`/api/posts/${id}`);
-            setPosts(res.data);
+            await axios.delete(`/api/posts/${id}`);
+            history.push('/home');
         } catch(err) {
             console.log(err);
         };
@@ -54,7 +55,7 @@ useEffect(() => {
                 </div>
                 <div className="postContent">
                     {props.user.id === post.writer_id ? 
-                        <button onClick={() => deletePost(+post.id)}>Delete</button>
+                        <button onClick={() => deletePost(post.id)}>Delete</button>
                     :
                         null
                     }                    

@@ -68,7 +68,6 @@ module.exports = {
         const db = req.app.get('db');
         const {title, content} = req.body;
         const {id} = req.session.user;
-        console.log(id);
 
         try {
             await db.add_post([title, content, id]);
@@ -81,7 +80,6 @@ module.exports = {
     getPost: async (req, res) => {
         const {postid} = req.params;
         const db = req.app.get('db');
-        console.log(postid);
 
         try {
             const singlePost = await db.get_post(postid)
