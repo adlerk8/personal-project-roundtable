@@ -1,5 +1,6 @@
 import { useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
 import axios from 'axios';
 
 
@@ -45,10 +46,18 @@ useEffect(() => {
                     <h3>Date: {post.created_at}</h3>
                     <h2>Title: {post.title}</h2>
                     <h2>By: {post.username}</h2>
-                    {/* <button onClick={() => editPost(id)}>Edit</button> */}
+                    {/* {props.user.id === post.writer_id ? 
+                         <button onClick={() => editPost(post.id)}>Edit</button>
+                    :
+                        null
+                    } */}
                 </div>
                 <div className="postContent">
-                    <button onClick={() => deletePost(post.id)}>Delete</button>
+                    {props.user.id === post.writer_id ? 
+                        <button onClick={() => deletePost(+post.id)}>Delete</button>
+                    :
+                        null
+                    }                    
                     <p>{post.content}</p>
                 </div>
             </div>
@@ -62,4 +71,6 @@ useEffect(() => {
     );
 }
 
-export default PostList;
+const mapStateToProps = state => state;
+
+export default connect(mapStateToProps)(PostList);
