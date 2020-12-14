@@ -35,7 +35,7 @@ app.delete('/api/logout', ctrl.logout);
 // Content Endpoints:
 app.post('/api/post', ctrl.addPost);
 app.get('/api/post/:postid', ctrl.getPost);
-app.get('/api/posts/:userid', ctrl.getMyPosts);
+app.get('/api/myposts', ctrl.getMyPosts);
 app.get('/api/allposts', ctrl.getAllPosts);
 app.put('/api/posts/:postid', ctrl.editPost);
 app.delete('/api/posts/:postid', ctrl.deletePost);

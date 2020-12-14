@@ -1,32 +1,23 @@
 import { useState, useEffect} from 'react';
-import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import axios from 'axios';
 
 
 const MyPosts = (props) => {
-const [posts, setPosts] = useState([]);
-const { id } = useParams();
+    const [posts, setPosts] = useState([]);
 
-useEffect(() => {
-    const getMyPosts = async () => {
-        try {
-            const res = await axios.get(`/api/posts`)
-            setPosts(res.data);
-        } catch (err) {
-            console.log(err)
+    useEffect(() => {
+        const getMyPosts = async () => {
+            try {
+                const res = await axios.get('/api/myposts/');
+                setPosts(res.data);
+            } catch (err) {
+                console.log(err)
+            }
         }
-    }
-    getMyPosts();
-}, []);
-
-    const deletePost = async (id) => {
-        try {
-            const res = await axios.delete(`/api/posts/${id}`);
-            setPosts(res.data);
-        } catch(err) {
-            console.log(err);
-        };
-    };
+        getMyPosts();
+    }, []);
 
     const mappedPosts = posts.map((post) => {
         return (
@@ -35,15 +26,14 @@ useEffect(() => {
                     <h3>Date: {post.created_at}</h3>
                     <h2>Title: {post.title}</h2>
                     <h2>By: {post.username}</h2>
-                    {/* <button onClick={() => editPost(id)}>Edit</button> */}
+                    <button><Link to={`/post/${post.id}`}>View Post</Link></button>
                 </div>
-                <div className="postContent">
-                    {/* <button onClick={() => props.onDelete(id)}>Delete</button> */}
+                <div className="postContent">                   
                     <p>{post.content}</p>
                 </div>
             </div>
         )
-    })
+    });
 
     return (
         <div>
@@ -52,4 +42,6 @@ useEffect(() => {
     );
 }
 
-export default MyPosts;
+const mapStateToProps = state => state;
+
+export default connect(mapStateToProps)(MyPosts);

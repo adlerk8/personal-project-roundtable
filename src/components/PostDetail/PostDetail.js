@@ -41,11 +41,12 @@ const Post = (props) => {
         getComments();
     }, []);
 
-    const editPost = async (postId, title, content) => {
+    const editPost = async () => {
         try {
             const res = await axios.put(`/api/posts/${postId}`, { title, content });
             setTitle(res.data.title);
             setContent(res.data.content);
+            setIsEditing(false);
         } catch (err) {
             console.log(err)
         }
@@ -118,7 +119,7 @@ const Post = (props) => {
                     }
                     {isEditing === true ?
                         <>
-                            <button onClick={() => editPost(postId)}>Update Post</button>
+                            <button onClick={() => editPost()}>Update Post</button>
                         </>
                         :
                         null

@@ -36,10 +36,9 @@ module.exports = {
         } else {
             const salt = bcrypt.genSaltSync(10);
             const hash = bcrypt.hashSync(password, salt);
-            const [newUser] = await db.register_user([username, hash]);
+            const [newUser] = await db.register_user([username, hash, `https://robohash.org/${username}?set=set4`]);
             delete newUser.password;
             req.session.user = newUser;
-            console.log(req.session.user)
             res.status(200).send(req.session.user);
         }
     } catch (err) {
@@ -94,24 +93,12 @@ module.exports = {
         }
     },
     getMyPosts: async (req, res) => {
-        const {userposts, search} = req.query;
-        const {id} = req.session.user;
         const db = req.app.get('db');
+        const {id} = req.session.user;
         
         try {
-            if(userposts === true && search !== null) {
-                const foundPost = db.posts.where({"title like": "%search%"})
-                res.status(200).send(foundPost)
-            } else if (userposts === false && search !== null) {
-                const foundPost = db.posts.where({"title like": "%search%", "writer_id !=": id})
-                res.status(200).send(foundPost)
-            } else if (userposts === false && search === null) {
-                const foundPost = db.posts.where({"writer_id !=": id})
-                res.status(200).send(foundPost)
-            } else {
-                const posts = await db.get_posts();
-                res.status(200).send(posts);
-            }
+            const posts = await db.get_my_posts(id);
+            res.status(200).send(posts);
         } catch (err) {
             console.log("Database error on getMyPosts function: ", err);
             res.sendStatus(500);
@@ -134,7 +121,7 @@ module.exports = {
         const {title, img, content} = req.body;
 
         try {
-            const posts = await db.edit_post([+postid, title, content, img]);
+            const [posts] = await db.edit_post([+postid, title, content, img]);
             res.status(200).send(posts);
         } catch (err) {
             console.log("Database error on editPost function: ", err);

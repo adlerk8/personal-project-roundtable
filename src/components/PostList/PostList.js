@@ -1,26 +1,22 @@
 import { useState, useEffect} from 'react';
-import { useParams, useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 
-const PostList = (props) => {
-const [posts, setPosts] = useState([]);
-const history = useHistory();
-const { id } = useParams();
+const PostList = () => {
+    const [posts, setPosts] = useState([]);
 
-useEffect(() => {
-    const getAllPosts = async () => {
-        try {
-            const res = await axios.get(`/api/allposts`)
-            setPosts(res.data);
-        } catch (err) {
-            console.log(err)
+    useEffect(() => {
+        const getAllPosts = async () => {
+            try {
+                const res = await axios.get(`/api/allposts`)
+                setPosts(res.data);
+            } catch (err) {
+                console.log(err)
+            }
         }
-    }
-    getAllPosts();
-}, []);
+        getAllPosts();
+    }, []);
 
 
     const mappedPosts = posts.map((post) => {
@@ -46,6 +42,4 @@ useEffect(() => {
     );
 }
 
-const mapStateToProps = state => state;
-
-export default connect(mapStateToProps)(PostList);
+export default PostList;

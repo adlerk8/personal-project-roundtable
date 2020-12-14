@@ -1,78 +1,64 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { loginUser } from '../../redux/reducer';
+import { useHistory } from 'react-router-dom';
 
 
-class Auth extends Component {
-    constructor() {
-        super ();
+const Auth = (props) => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const history = useHistory();
 
-        this.state = {
-            username: '',
-            password: ''
-        }
-    }
 
-    handleChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
-    };
-
-    login = async (e) => {
+    const login = async (e) => {
         e.preventDefault();
-        const { username, password } = this.state;
         try {
             const user = await axios.post('/api/login', { username, password })
-            this.props.loginUser(user.data)
-            this.props.history.push('/home')
+            props.loginUser(user.data)
+            history.push('/home')
         }
         catch (err) {
             console.log(err)
         }
     };
 
-    register = async (e) => {
+    const register = async (e) => {
         e.preventDefault();
-        const {username, password} = this.state
         try {
             const user = await axios.post('/api/register', {username, password})
-            this.props.loginUser(user.data)
-            this.props.history.push('/home')
+            props.loginUser(user.data)
+            history.push('/home')
         }
         catch (err) {
             console.log(err)
         }
     };
 
-    render() {
-        const { username, password } = this.state;
-        return (
-            <div>
-                <h1>Welcome to Roundtable</h1>
-                <form>
-                    <input
-                        name="username"
-                        placeholder="username"
-                        value={username}
-                        onChange={e => this.handleChange(e)}
-                    />
-                    <input
-                        name="password"
-                        placeholder="password"
-                        type="password"
-                        value={password}
-                        onChange={e => this.handleChange(e)}
-                    />
-                    <div className="buttons">
-                        <button onClick={e => this.register(e)}>Join Roundtable</button>
-                        <button onClick={e => this.login(e)}>Sign in</button>
-                    </div>
-                </form>
-            </div>
-        )
-    }
+    return (
+        <div>
+            <h1>Welcome to Roundtable</h1>
+            <form>
+                <input
+                    name="username"
+                    placeholder="username"
+                    value={username}
+                    onChange={e => setUsername(e.target.value)}
+                />
+                <input
+                    name="password"
+                    placeholder="password"
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                />
+                <div className="buttons">
+                    <button onClick={e => register(e)}>Join Roundtable</button>
+                    <button onClick={e => login(e)}>Sign in</button>
+                </div>
+            </form>
+        </div>
+    )
 }
 
 const mapStateToProps = state => state;
