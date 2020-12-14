@@ -39,6 +39,7 @@ app.get('/api/posts/:userid', ctrl.getMyPosts);
 app.get('/api/allposts', ctrl.getAllPosts);
 app.put('/api/posts/:postid', ctrl.editPost);
 app.delete('/api/posts/:postid', ctrl.deletePost);
+app.get('/api/comments/:postid', ctrl.getComments);
 app.post('/api/comments/:postid', ctrl.addComment);
 app.put('/api/comments/:commentid', ctrl.editComment);
 app.delete('/api/comments/:commentid', ctrl.deleteComment);

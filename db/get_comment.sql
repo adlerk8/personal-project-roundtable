@@ -1,3 +1,3 @@
-SELECT * FROM comments
-JOIN posts ON comments.id = posts.id
-WHERE posts.id = $1;
+SELECT comments.comment_body, comments.created_at, writers.username, writers.profile_pic FROM comments
+JOIN writers ON comments.commentor_id = writers.id
+WHERE comments.post_id = $1;

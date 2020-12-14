@@ -113,7 +113,7 @@ module.exports = {
                 res.status(200).send(posts);
             }
         } catch (err) {
-            console.log("Database error on getPosts function: ", err);
+            console.log("Database error on getMyPosts function: ", err);
             res.sendStatus(500);
         };
     },
@@ -150,6 +150,18 @@ module.exports = {
             res.status(200).send(posts);
         } catch (err) {
             console.log("Database error on deletePost function: ", err);
+            res.sendStatus(500);
+        };
+    },
+    getComments: async (req, res) => {
+        const db = req.app.get('db');
+        const {postid} = req.params;
+
+        try {
+            const comments = await db.get_comment(postid);
+            res.status(200).send(comments);
+        } catch (err) {
+            console.log("Database error on getComments function: ", err);
             res.sendStatus(500);
         };
     },

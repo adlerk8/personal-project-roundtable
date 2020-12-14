@@ -10,22 +10,35 @@ const Post = (props) => {
     const [timestamp, setTimestamp] = useState('');
     const [username, setUsername] = useState('');
     const [isEditing, setIsEditing] = useState(false);
+    const [comments, setComments] = useState([]);
+    const [commentBody, setCommentBody] = useState('');
     const { postId } = useParams();
     const history = useHistory();
 
-    useEffect(() => {
-        const getPost = async () => {
-            try {
-                const res = await axios.get(`/api/post/${postId}`)
-                setTitle(res.data.title);
-                setContent(res.data.content);
-                setTimestamp(res.data.created_at);
-                setUsername(res.data.username);
-            } catch (err) {
-                console.log(err)
-            }
-        };
+    const getComments = async () => {
+        try {
+            const res = await axios.get(`/api/comments/${postId}`)
+            setComments(res.data);
+        } catch (err) {
+            console.log(err)
+        }
+    };
+
+    const getPost = async () => {
+        try {
+            const res = await axios.get(`/api/post/${postId}`)
+            setTitle(res.data.title);
+            setContent(res.data.content);
+            setTimestamp(res.data.created_at);
+            setUsername(res.data.username);
+        } catch (err) {
+            console.log(err)
+        }
+    };
+
+    useEffect(() => {        
         getPost();
+        getComments();
     }, []);
 
     const editPost = async (postId, title, content) => {
@@ -47,16 +60,23 @@ const Post = (props) => {
         };
     };
 
-    const addComment = async (postid, commentBody) => {
+    const addComment = async () => {
         try {
-            const res = await axios.post(`/api/comments/${postid}`, commentBody)
-
+            await axios.post(`/api/comments/${postId}`, {commentBody})
+            getComments();
+            setCommentBody('');
         } catch (err) {
             console.log(err);
         }
     };
 
     const canEdit = props.user.username === username;
+
+    const mappedComments = comments.map((comment) => {
+        return (
+            <Comment key={comment.id} {...comment}/>
+        )
+    })
 
     return (
         <div>
@@ -104,12 +124,17 @@ const Post = (props) => {
                         null
                     }
                     </div>
-                    <button>Add Comment</button>
                 </div>
                 <div className="comment-container">
-                    <ul>
-                        <li><Comment /></li>
-                    </ul>
+                    {mappedComments}
+                </div>
+                <div>
+                    <input
+                        placeholder="Give some feedback..."
+                        value={commentBody}
+                        onChange={e => setCommentBody(e.target.value)}
+                    />
+                    <button onClick={() => addComment(postId)}>Add Comment</button>
                 </div>
             </div>
         </div>
