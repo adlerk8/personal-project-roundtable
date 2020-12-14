@@ -3,6 +3,71 @@ import { useParams, useHistory } from 'react-router-dom';
 import Comment from '../Comment/Comment';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
+
+const WholePost = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+`
+
+const PostBox = styled.div`
+    border: 1px;
+    border-color: black;
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    margin: 0 auto;
+`
+
+const PostInfo = styled.div`
+    display: flex;
+    flex-direction: column;
+    background-color: #80ADA0;
+    width: 300px;
+    font-family: 'Hammersmith One', sans-serif;
+    padding: 10px;
+`
+
+const CommentBox = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
+const Button = styled.button`
+    border-color: #F2F2F2;
+    border-width: 1px;
+    font-family: 'Hammersmith One', sans-serif;
+    font-size: 14px;
+    color: white;
+    background-color: #DAA4B9;
+    margin: 7px;
+    padding: 3px 5px 3px 5px;
+    
+`
+
+const Date = styled.h3`
+    font-size: 12px;
+    color: whitesmoke;
+`
+
+const Title = styled.h2`
+    font-weight: lighter;
+`
+
+const Author = styled.h2`
+    font-weight: lighter;
+    font-size: 16px;
+`
+
+const ContentStyle = styled.p`
+    font-family: 'Cantarell', sans-serif;
+`
 
 const Post = (props) => {
     const [title, setTitle] = useState('');
@@ -80,10 +145,10 @@ const Post = (props) => {
     })
 
     return (
-        <div>
-            <div className="postBody">
-                <div className="postInfo">
-                    <h3>Date: {timestamp}</h3>
+        <WholePost>
+            <PostBox>
+                <PostInfo>
+                    <Date>{timestamp}</Date>
                     {isEditing === true ?
                         <input
                             placeholder="Title"
@@ -91,17 +156,17 @@ const Post = (props) => {
                             onChange={e => setTitle(e.target.value)}
                         />
                         :
-                        <h2>Title: {title}</h2>
+                        <Title>Title: {title}</Title>
                     }
-                    <h2>By: {username}</h2>
+                    <Author>By: {username}</Author>
                     {canEdit ?
-                            <button onClick={() => setIsEditing(true)}>Edit</button>
+                            <Button onClick={() => setIsEditing(true)}>Edit</Button>
                         :
                             null
                     }
                     
-                </div>
-                <div className="postContent">
+                </PostInfo>
+                <ContentStyle>
                 {isEditing === true ?
                     <input
                         placeholder="Your beautiful writing goes here..."
@@ -113,32 +178,32 @@ const Post = (props) => {
                     }
                     <div>
                     {canEdit ?
-                        <button onClick={() => deletePost(postId)}>Delete</button>
+                        <Button onClick={() => deletePost(postId)}>Delete</Button>
                         :
                         null
                     }
                     {isEditing === true ?
                         <>
-                            <button onClick={() => editPost()}>Update Post</button>
+                            <Button onClick={() => editPost()}>Update Post</Button>
                         </>
                         :
                         null
                     }
                     </div>
-                </div>
-                <div className="comment-container">
+                </ContentStyle>
+                <CommentBox>
                     {mappedComments}
-                </div>
+                </CommentBox>
                 <div>
                     <input
                         placeholder="Give some feedback..."
                         value={commentBody}
                         onChange={e => setCommentBody(e.target.value)}
                     />
-                    <button onClick={() => addComment(postId)}>Add Comment</button>
+                    <Button onClick={() => addComment(postId)}>Add Comment</Button>
                 </div>
-            </div>
-        </div>
+            </PostBox>
+        </WholePost>
     );
 }
 

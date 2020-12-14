@@ -2,6 +2,11 @@
   text-align: center;
 }
 
+a {
+  text-decoration: none;
+  color: whitesmoke;
+}
+
 html, body {
   background-color: #F3E5E0;
 }
