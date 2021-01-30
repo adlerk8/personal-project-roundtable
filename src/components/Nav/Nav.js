@@ -14,7 +14,6 @@ const NavStyle = styled.div`
     top: 170px;
     left: 0;
     overflow-x: hidden;
-    padding-top: 20px;
     display: flex;
     @media (max-width: 400px) {
         width: 100%;

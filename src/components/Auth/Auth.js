@@ -16,6 +16,7 @@ const GlobalStyle = createGlobalStyle`
 const AuthStyling = styled.div`
     display: block;
     margin: 0 auto;
+    margin-top: 250px;
 `
 const InputFields = styled.div`
     display: flex;
@@ -37,11 +38,12 @@ const Label = styled.p`
     font-size: 16px;
 `
 const AppName = styled.h1`
-    font-size: 56px;
+    font-size: 62px;
     font-weight: bold;
     text-align: center;
     color: #243156;
     margin: 0 auto;
+    margin-bottom: 25px;
     font-family: 'Caveat', cursive;
     text-shadow: -3px 3px 0 rgba(0, 0, 0, 0.1), -2px 2px 0 rgba(0, 0, 0, 0.1);
     @media (max-width: 400px) {

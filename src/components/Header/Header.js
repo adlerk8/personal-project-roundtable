@@ -2,11 +2,12 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 const AppName = styled.h1`
-    font-size: 48px;
-    text-shadow: 0px 0px 4px white;
+    font-size: 56px;
+    font-weight: bold;
     text-align: center;
-    color: #010F20;
+    color: #243156;
     font-family: 'Caveat', cursive;
+    text-shadow: -3px 3px 0 rgba(0, 0, 0, 0.1), -2px 2px 0 rgba(0, 0, 0, 0.1);
     @media (max-width: 400px) {
         font-size: 24px;
     }
@@ -15,6 +16,7 @@ const AppName = styled.h1`
 const Username = styled.div`
     font-family: 'Caveat', cursive;
     font-size: 24px;
+    margin-left: 20px;
     @media (max-width: 400px) {
         font-size: 16px;
     }
@@ -22,6 +24,7 @@ const Username = styled.div`
 const ProfilePic = styled.img`
     border-radius: 50%;
     max-height: 65px;
+    margin-right: 25px;
     background-color: #F2F2F2;
 `
 const HeaderStyle = styled.div`
@@ -39,10 +42,9 @@ const HeaderStyle = styled.div`
 `
 
 const Header = (props) => {
-
     return (
         <HeaderStyle>
-            <Username>Hey {props.user.username}</Username>
+            <Username>Hey {props.user.username}, <br/>let's write!</Username>
             <AppName id="siteTitle">Roundtable</AppName>
             <ProfilePic src={props.user.profile_pic} alt="avatar" />
         </HeaderStyle>

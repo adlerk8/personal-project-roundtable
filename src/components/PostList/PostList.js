@@ -6,12 +6,12 @@ import styled from 'styled-components';
 const PostBox = styled.div`
     border: 1px;
     border-color: black;
-    width: 30%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 600px;
     padding: 20px;
     margin: 0 auto;
+`
+const Test = styled.div`
+    display: inline-block;
 `
 
 const PostInfo = styled.div`
@@ -51,9 +51,8 @@ const Button = styled.button`
 
 const ContentStyle = styled.p`
     font-family: 'Cantarell', sans-serif;
-
+    display: inline-block;
 `
-
 
 const PostList = () => {
     const [posts, setPosts] = useState([]);
@@ -74,15 +73,17 @@ const PostList = () => {
     const mappedPosts = posts.map((post) => {
         return (
             <PostBox key={post.id}>
-                <PostInfo>
-                    <Date>{post.created_at}</Date>
-                    <Title>{post.title}</Title>
-                    <Author>By: {post.username}</Author>
-                    <Button><Link to={`/post/${post.id}`}>View Post</Link></Button>
-                </PostInfo>
-                <ContentStyle>                   
-                    <p>{post.content}</p>
-                </ContentStyle>
+                <Test>
+                    <PostInfo>
+                        <Date>{post.created_at}</Date>
+                        <Title>{post.title}</Title>
+                        <Author>By: {post.username}</Author>
+                        <Button><Link to={`/post/${post.id}`}>View Post</Link></Button>
+                    </PostInfo>
+                    <ContentStyle>                   
+                        <p>{post.content}</p>
+                    </ContentStyle>
+                </Test>
             </PostBox>
         )
     })
